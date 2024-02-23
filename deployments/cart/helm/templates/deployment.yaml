@@ -1,61 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cart.fullname" . }}
+  name: cart
   labels:
-    {{- include "cart.labels" . | nindent 4 }}
+    service: cart
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "cart.selectorLabels" . | nindent 6 }}
+      service: cart
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "cart.selectorLabels" . | nindent 8 }}
+        service: cart
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "cart.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{if .Values.psp.enabled }}
+      serviceAccountName: robot-shop
+      {{end}}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: cart
+        image: {{ .Values.containers.image.repo }}:{{ .Values.containers.image.tag }}
+        imagePullPolicy: {{ .Values.containers.image.pullPolicy }}
+        # agent networking access
+        env:
+          - name: INSTANA_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        {{- with .Values.cart.affinity -}}
+        affinity:
+          {{- toYaml . | nindent 8 -}}
+        {{- end -}}
+        {{- with .Values.cart.nodeSelector -}}
+        nodeSelector:
+          {{- toYaml . | nindent 8 -}}
+        {{- end -}}
+        {{- with .Values.cart.tolerations -}}
+        tolerations:
+          {{- toYaml . | nindent 8 -}}
+        {{- end -}}
+
+
+
+
