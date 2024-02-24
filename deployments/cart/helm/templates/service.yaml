@@ -6,7 +6,7 @@ spec:
   selector:
     service: cart
   ports:
-  - name: {{ .Values.ports.name }}
-    port: {{ .Values.ports.port }}
-    targetPort: {{ .Values.ports.targetPort }}
+  - name: {{ .Values.service.ports.name }}
+    port: {{ .Values.service.ports.port }}
+    targetPort: {{ .Values.service.ports.targetPort }}
     

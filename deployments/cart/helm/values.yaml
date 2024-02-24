@@ -17,3 +17,9 @@ containers:
     requests:
       cpu: 100m
       memory: 50Mi
+
+service:
+  ports:
+    name: http
+    port: 8080
+    targetPort: 8080
