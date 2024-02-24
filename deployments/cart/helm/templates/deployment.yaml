@@ -36,19 +36,4 @@ spec:
           requests:
             cpu: {{ .Values.containers.resources.requests.cpu }}
             memory: {{ .Values.containers.resources.requests.memory }}
-        {{- with .Values.cart.affinity -}}
-        # affinity:
-        #   {{- toYaml . | nindent 8 -}}
-        # {{- end -}}
-        # {{- with .Values.cart.nodeSelector -}}
-        # nodeSelector:
-        #   {{- toYaml . | nindent 8 -}}
-        # {{- end -}}
-        # {{- with .Values.cart.tolerations -}}
-        # tolerations:
-        #   {{- toYaml . | nindent 8 -}}
-        # {{- end -}}
-
-
-
-
+ 
