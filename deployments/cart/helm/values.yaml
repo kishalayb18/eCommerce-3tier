@@ -3,6 +3,7 @@ appName: cart
 # Pod Security Policy
 psp:
   enabled: false
+  serviceAccountName: robot-shop
 
 containers:
   image:
