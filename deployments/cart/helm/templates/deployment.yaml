@@ -15,7 +15,7 @@ spec:
         service: {{ .Values.appName }}
     spec:
       {{if .Values.psp.enabled }}
-      serviceAccountName: robot-shop
+      serviceAccountName: {{ .Values.psp.serviceAccountName }}
       {{end}}
       containers:
       - name: {{ .Values.appName }}
@@ -28,7 +28,7 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.service.ports.targetPort }}
         resources:
           limits:
             cpu: {{ .Values.containers.resources.limits.cpu }}
