@@ -19,6 +19,10 @@ containers:
       cpu: 100m
       memory: 50Mi
 
+  runAs:
+    user: 100
+    group: {}
+
 service:
   type: NodePort
   ports:
