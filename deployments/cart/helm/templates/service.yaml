@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: {{ .Values.appName }}
 spec:
-  selector:
-    service: cart
+  type: {{ .Values.service.type }}
   ports:
   - name: {{ .Values.service.ports.name }}
     port: {{ .Values.service.ports.port }}
     targetPort: {{ .Values.service.ports.targetPort }}
+  selector:
+    service: {{ .Values.appName }}
     
