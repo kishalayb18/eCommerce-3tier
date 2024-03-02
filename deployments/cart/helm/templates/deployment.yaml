@@ -29,11 +29,5 @@ spec:
                 fieldPath: status.hostIP
         ports:
         - containerPort: {{ .Values.service.ports.targetPort }}
-        resources:
-          limits:
-            cpu: {{ .Values.containers.resources.limits.cpu }}
-            memory: {{ .Values.containers.resources.limits.memory }}
-          requests:
-            cpu: {{ .Values.containers.resources.requests.cpu }}
-            memory: {{ .Values.containers.resources.requests.memory }}
+        {{- include "container.resources" . | nindent 8 -}}
  

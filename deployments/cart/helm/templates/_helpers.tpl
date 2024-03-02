@@ -1,4 +1,20 @@
 {{/*
+Resources of the Container
+*/}}
+{{- define "container.resources" -}}
+{{- if .Values.containers.resources -}}
+resources:
+  limits:
+    cpu: {{ (.Values.containers.resources.limits).cpu | default "500m" }}
+    memory: {{ (.Values.containers.resources.limits).memory | default "100Mi" }}
+  requests:
+    cpu: {{ (.Values.containers.resources.requests).cpu | default "5m" }}
+    memory: {{ (.Values.containers.resources.requests).memory | default "10Mi" }}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "cart.name" -}}
