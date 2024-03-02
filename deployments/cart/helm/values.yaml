@@ -20,6 +20,7 @@ containers:
       memory: 50Mi
 
 service:
+  type: NodePort
   ports:
     name: http
     port: 8080
