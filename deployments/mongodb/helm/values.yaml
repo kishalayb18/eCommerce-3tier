@@ -1,0 +1,33 @@
+appname: mongodb
+
+# Pod Security Policy
+psp:
+  enabled: false
+  serviceAccountName: robot-shop
+
+containers:
+  image:
+    repo: robotshop/rs-mongodb
+    tag: latest
+    pullPolicy: ifNotPresent
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+  runAs:
+    user: 100
+    group: {}
+
+  restartPolicy: Always
+
+service:
+  type: NodePort
+  ports:
+    name: mongo
+    port: 27017
+    targetPort: 27017
