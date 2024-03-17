@@ -1,0 +1,35 @@
+appName: ratings
+
+# Pod Security Policy
+psp:
+  enabled: false
+  serviceAccountName: robot-shop
+
+containers:
+  image:
+    repo: robotshop/rs-ratings
+    tag: latest
+    pullPolicy: ifNotPresent
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+
+  readinessProbe:
+    path: /_health
+    port: 80
+
+  runAs:
+    user: 100
+    group: {}
+
+service:
+  type: NodePort
+  ports:
+    name: http
+    port: 80
+    targetPort: 80
