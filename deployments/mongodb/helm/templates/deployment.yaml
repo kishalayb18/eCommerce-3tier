@@ -19,16 +19,10 @@ spec:
       {{end}}
       containers:
       - name: {{ .Values.appname }}
-        image: {{ .Values.containers.image.repo }}:{{ .Values.containers.image.tag }}
-        imagePullPolicy: {{ .Values.containers.image.pullPolicy }}
-        # agent networking access
-        env:
-          - name: INSTANA_AGENT_HOST
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
+        image: {{ ((.Values.containers).image).repo }}:{{ ((.Values.containers).image).tag }}
+        imagePullPolicy: {{ ((.Values.containers).image).pullPolicy }}
         ports:
-        - containerPort: {{ .Values.service.ports.targetPort }}
+        - containerPort: {{ ((.Values.service).ports).targetPort }}
         {{- include "container.resources" . | nindent 8 -}}
         {{- include "container.securityContext" . | nindent 8 -}}
       restartPolicy: {{ .Values.containers.restartPolicy }}
