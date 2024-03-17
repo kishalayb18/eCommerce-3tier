@@ -13,6 +13,22 @@ resources:
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+readinessProbe of the container
+*/}}
+{{- define "container.readinessProbe" -}}
+{{- if .Values.containers.readinessProbe -}}
+httpGet:
+  path: {{ .Values.containers.readinessProbe.path }}
+  port: {{ .Values.containers.readinessProbe.port }}
+  initialDelaySeconds: {{ default 5 .Values.containers.readinessProbe.initialDelaySeconds }}
+  periodSeconds: {{ default 5 .Values.containers.readinessProbe.periodSeconds }}
+  failureThreshold: {{ default 30 .Values.containers.readinessProbe.failureThreshold }}
+  successThreshold: {{ default 1 .Values.containers.readinessProbe.successThreshold }}
+{{- end -}}
+{{- end -}}
+
 {{/*
 container security user group
 */}}
