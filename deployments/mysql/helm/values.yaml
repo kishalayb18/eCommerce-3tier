@@ -1,48 +1,31 @@
-replicaCount: 1
+appName: mysql
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  tag: latest
+# Pod Security Policy
+psp:
+  enabled: false
+  serviceAccountName: robot-shop
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+containers:
+  image:
+    repo: robotshop/rs-mysql
+    tag: latest
+    pullPolicy: ifNotPresent
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  #annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+
+  runAs:
+    user: 100
+    group: {}
+
 service:
   type: NodePort
-  port: 80
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-resources: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 80
-
-#affinity: {}
-
-#nodeSelector: {}
-
-#tolerations: {}
+  ports:
+    name: http
+    port: 8080
+    targetPort: 8080
