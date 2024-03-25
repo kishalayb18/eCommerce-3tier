@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .values.appname }}
+  name: {{ .Values.appName }}
   labels:
-    service: {{ .values.appname }}
+    service: {{ .Values.appName }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: {{ .values.appname }}
+      service: {{ .Values.appName }}
   template:
     metadata:
       labels:
-        service: {{ .values.appname }}
+        service: {{ .Values.appName }}
     spec:
       {{ if .Values.psp.enabled }}
       serviceAccountName: {{ .Values.psp.serviceAccountName }}
       {{ end }}
       containers:
       - name: {{ .values.appname }}
-        image: {{ .Values.containers.image.repo }}{{ .Values.containers.image.tag }}
+        image: {{ .Values.containers.image.repo }}:{{ .Values.containers.image.tag }}
         imagePullPolicy: {{ .Values.containers.image.pullPolicy }}
         securityContext:
           capabilities:
