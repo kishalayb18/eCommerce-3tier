@@ -30,4 +30,6 @@ spec:
         ports:
         - containerPort: {{ .Values.service.ports.targetPort }}
         {{- include "container.resources" . | nindent 8 -}}
+        {{- include "container.securityContext" . | nindent 8 -}}
+      {{- end }}
  
