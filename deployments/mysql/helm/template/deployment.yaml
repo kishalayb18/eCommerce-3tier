@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  labels:
+    service: {{ .Values.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        service: {{ .Values.appName }}
+    spec:
+      {{ if .Values.psp.enabled }}
+      serviceAccountName: {{ .Values.psp.serviceAccountName }}
+      {{ end }}
+      containers:
+      - name: {{ .values.appname }}
+        image: {{ .Values.containers.image.repo }}:{{ .Values.containers.image.tag }}
+        imagePullPolicy: {{ .Values.containers.image.pullPolicy }}
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+        ports:
+        - containerPort: {{ .Values.service.ports.targetPort }}
+        {{- include "container.resources" . | nindent 8 -}}
+        {{- include "container.securityContext" . | nindent 8 -}}
+      {{- end }}
