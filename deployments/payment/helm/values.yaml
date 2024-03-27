@@ -1,4 +1,4 @@
-appName: cart
+appName: payment
 
 # Pod Security Policy
 psp:
@@ -7,7 +7,7 @@ psp:
 
 containers:
   image:
-    repo: robotshop/rs-cart
+    repo: robotshop/rs-payment
     tag: latest
     pullPolicy: ifNotPresent
 
